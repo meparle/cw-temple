@@ -91,8 +91,13 @@ public class Explorer {
    */
   public void escape(EscapeState state) {
       LinkedList<Node> route = findRoute(state.getCurrentNode(), state.getExit());
-      
-      return;
+      route.remove(0);
+      for (Node x : route) {
+          state.moveTo(x);
+          if (x.getTile().getGold()!=0) {
+              state.pickUpGold();
+          }
+      }
   //create a queue of paths through the maze (list of nodes), without actually moving, breadth first search
 
   //choose best path and move, checking for gold as you go
@@ -108,11 +113,13 @@ public class Explorer {
             LinkedList<Node> candidate = waysOut.remove();
             Set<Node> neighbours = candidate.peekLast().getNeighbours();
             for (Node x : neighbours) {
-                LinkedList<Node> copiedCandidate = new LinkedList<>(candidate);
-                copiedCandidate.add(x);
-                waysOut.add(copiedCandidate);
-                if (x.equals(exit)) {
-                    return copiedCandidate;
+                if (!candidate.contains(x)) {
+                    LinkedList<Node> copiedCandidate = new LinkedList<>(candidate);
+                    copiedCandidate.add(x);
+                    waysOut.add(copiedCandidate);
+                    if (x.equals(exit)) {
+                        return copiedCandidate;
+                    }
                 }
             }
         }
