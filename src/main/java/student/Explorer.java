@@ -2,6 +2,7 @@ package student;
 
 import game.EscapeState;
 import game.ExplorationState;
+import game.Node;
 import game.NodeStatus;
 
 import java.util.*;
@@ -89,6 +90,31 @@ public class Explorer {
    * @param state the information available at the current state
    */
   public void escape(EscapeState state) {
-    //TODO: Escape from the cavern before time runs out
+      LinkedList<Node> route = findRoute(state.getCurrentNode(), state.getExit());
+      
+      return;
+  //create a queue of paths through the maze (list of nodes), without actually moving, breadth first search
+
+  //choose best path and move, checking for gold as you go
   }
+
+    private LinkedList<Node> findRoute(Node start, Node exit) {
+        Queue<LinkedList<Node>> waysOut = new LinkedList<>();
+        LinkedList<Node> path = new LinkedList<>();
+        path.add(start);
+        waysOut.add(path);
+        while (true) {
+            //take the next LinkedList in the queue and investigate the most recent Node's neighbours
+            LinkedList<Node> candidate = waysOut.remove();
+            Set<Node> neighbours = candidate.peekLast().getNeighbours();
+            for (Node x : neighbours) {
+                LinkedList<Node> copiedCandidate = new LinkedList<>(candidate);
+                copiedCandidate.add(x);
+                waysOut.add(copiedCandidate);
+                if (x.equals(exit)) {
+                    return copiedCandidate;
+                }
+            }
+        }
+    }
 }
