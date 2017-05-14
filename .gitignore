@@ -1,0 +1,11 @@
+*.class
+
+# Package Files #
+*.jar
+*.war
+*.ear
+.idea
+.gradle
+*.gradle
+*.jar
+build/
